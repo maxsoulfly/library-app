@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Library App</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<h1>My Library</h1>
+		<div id="book-list"></div>
+		<button id="new-book-btn">Add New Book</button>
+
+		<!-- Modal for New Book Form -->
+		<div id="modal" class="modal">
+			<div class="modal-content">
+				<span class="close-btn">&times;</span>
+				<form id="new-book-form">
+					<input
+						type="text"
+						id="title"
+						placeholder="Title"
+						required
+					/>
+					<input
+						type="text"
+						id="author"
+						placeholder="Author"
+						required
+					/>
+					<input
+						type="number"
+						id="pages"
+						placeholder="Pages"
+						required
+					/>
+					<label> <input type="checkbox" id="read" /> Read </label>
+					<button type="submit">Add Book</button>
+				</form>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
