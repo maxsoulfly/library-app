@@ -23,13 +23,36 @@ const myLibrary = [
 	new Book(null, "Dune", "Frank Herbert", 412, true),
 ];
 
-const render = () => {
-	const bookList = document.querySelector("#bookList");
+const bookForm = document.getElementById("bookForm");
 
-	myLibrary.forEach((book) => {
-		const bookCard = document.createElement("div");
-		bookCard.classList.add("col");
-		bookCard.innerHTML = `
+bookForm.addEventListener("submit", (event) => {
+	event.preventDefault();
+
+	const title = document.querySelector("#title").value;
+	const author = document.querySelector("#author").value;
+	const pages = document.querySelector("#pages").value;
+	const read = document.querySelector("#read").checked;
+
+	const book = new Book(null, title, author, pages, read);
+
+	addNewBook(book);
+
+	// reset form and close modal
+	bookForm.reset();
+	let bookModal = bootstrap.Modal.getInstance(
+		document.getElementById("bookModal")
+	);
+	bookModal.hide();
+});
+
+const addNewBook = (book) => {
+	myLibrary.push(book);
+
+	newBookCard(book);
+};
+
+const bookCardHTML = (book) => {
+	return `
         <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="book-title">
@@ -45,6 +68,7 @@ const render = () => {
                     ${book.author}</h6>
                 <p class="book-pages">
                     ${book.pages} pages</p>
+                <p>id: ${book.id}</p>
                 <div class="align-items-center">
                     <button
                         type="button"
@@ -60,10 +84,20 @@ const render = () => {
                     </button>
                 </div>
             </div>
-        </div>
-        `;
-		bookList.appendChild(bookCard);
-	});
+        </div>`;
 };
 
-render();
+const newBookCard = (book) => {
+	const bookCard = document.createElement("div");
+	bookCard.classList.add("col");
+	bookCard.innerHTML = bookCardHTML(book);
+	bookList.appendChild(bookCard);
+};
+
+const renderBooks = () => {
+	const bookList = document.querySelector("#bookList");
+
+	myLibrary.forEach((book) => newBookCard(book));
+};
+
+renderBooks();
