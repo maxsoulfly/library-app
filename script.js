@@ -6,21 +6,20 @@ class Book {
 		this.pages = pages;
 		this.read = read;
 	}
-
-	info() {
-		return {
-			title: this.title,
-			author: this.author,
-			pages: this.pages,
-			read: this.read,
-		};
-	}
 }
 
 const myLibrary = [
 	new Book(null, "The Hobbit", "J.R.R. Tolkien", 295, true),
 	new Book(null, "1984", "George Orwell", 328, false),
 	new Book(null, "Dune", "Frank Herbert", 412, true),
+	new Book(null, "The Lord of the Rings", "J.R.R. Tolkien", 1178, true),
+	new Book(
+		null,
+		"The Hitchhiker's Guide to the Galaxy",
+		"Douglas Adams",
+		208,
+		false
+	),
 ];
 
 const bookForm = document.getElementById("bookForm");
@@ -48,6 +47,7 @@ bookForm.addEventListener("submit", (event) => {
 const removeBookFromLibrary = (id) => {
 	// remove from array
 	const bookIndex = myLibrary.findIndex((book) => book.id === id);
+	if (bookIndex === -1) return;
 	myLibrary.splice(bookIndex, 1);
 
 	// remove from html
@@ -57,6 +57,7 @@ const removeBookFromLibrary = (id) => {
 const toggleReadStatus = (id) => {
 	// change in data
 	const bookIndex = myLibrary.findIndex((book) => book.id === id);
+	if (bookIndex === -1) return;
 	myLibrary[bookIndex].read = !myLibrary[bookIndex].read;
 
 	// change in html
@@ -71,7 +72,7 @@ const addNewBook = (book) => {
 };
 const bookCardHTML = (book) => {
 	return `
-    <div class="card shadow-sm" id="book-${book.id}">
+    <div class="card shadow-sm">
         <div class="card-body">
             <h5 class="book-title">
                 ${book.title}
@@ -103,6 +104,7 @@ const addBookCard = (book) => {
 	const bookList = document.querySelector("#bookList");
 	const bookCard = document.createElement("div");
 	bookCard.classList.add("col");
+	bookCard.id = `book-${book.id}`;
 	bookCard.innerHTML = bookCardHTML(book);
 	bookList.appendChild(bookCard);
 };
