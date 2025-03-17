@@ -45,49 +45,62 @@ bookForm.addEventListener("submit", (event) => {
 	bookModal.hide();
 });
 
+const removeBookFromLibrary = (id) => {
+	// remove from array
+	const bookIndex = myLibrary.findIndex((book) => book.id === id);
+	myLibrary.splice(bookIndex, 1);
+
+	// remove from html
+	const bookInList = document.querySelector(`#book-${id}`);
+	bookInList.parentElement.removeChild(bookInList);
+};
+const toggleReadStatus = (id) => {
+	// change in data
+	const bookIndex = myLibrary.findIndex((book) => book.id === id);
+	myLibrary[bookIndex].read = !myLibrary[bookIndex].read;
+
+	// change in html
+	const bookInList = document.querySelector(`#book-${id}`);
+	bookInList.innerHTML = bookCardHTML(myLibrary[bookIndex]);
+};
+
 const addNewBook = (book) => {
 	myLibrary.push(book);
 
-	newBookCard(book);
+	addBookCard(book);
 };
-
 const bookCardHTML = (book) => {
 	return `
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5 class="book-title">
-                    ${book.title}
-                    <span
-                        class="badge rounded-pill ${
-							book.read ? "text-bg-success" : "text-bg-secondary"
-						}"
-                        >${book.read ? "Read" : "Unread"}</span
-                    >
-                </h5>
-                <h6 class="book-author">
-                    ${book.author}</h6>
-                <p class="book-pages">
-                    ${book.pages} pages</p>
-                <p>id: ${book.id}</p>
-                <div class="align-items-center">
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-warning"
-                    >
-                        Toggle Read
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-sm btn-danger"
-                    >
-                        Delete
-                    </button>
-                </div>
+    <div class="card shadow-sm" id="book-${book.id}">
+        <div class="card-body">
+            <h5 class="book-title">
+                ${book.title}
+                <span class="badge rounded-pill ${
+					book.read ? "text-bg-success" : "text-bg-secondary"
+				}">
+                    ${book.read ? "Read" : "Unread"}
+                </span>
+            </h5>
+            <h6 class="book-author">${book.author}</h6>
+            <p class="book-pages">${book.pages} pages</p>
+            <div class="align-items-center">
+                <button type="button"
+                    class="btn btn-sm btn-warning"
+                    onclick="toggleReadStatus('${book.id}')">
+                    Toggle Read
+                </button>
+                <button type="button"
+                    class="btn btn-sm btn-danger"
+                    onclick="removeBookFromLibrary('${book.id}')">
+                    Delete
+                </button>
             </div>
-        </div>`;
+        </div>
+    </div>`;
 };
 
-const newBookCard = (book) => {
+const addBookCard = (book) => {
+	const bookList = document.querySelector("#bookList");
 	const bookCard = document.createElement("div");
 	bookCard.classList.add("col");
 	bookCard.innerHTML = bookCardHTML(book);
@@ -95,9 +108,7 @@ const newBookCard = (book) => {
 };
 
 const renderBooks = () => {
-	const bookList = document.querySelector("#bookList");
-
-	myLibrary.forEach((book) => newBookCard(book));
+	myLibrary.forEach((book) => addBookCard(book));
 };
 
 renderBooks();
