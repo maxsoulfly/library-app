@@ -30,6 +30,11 @@ class Library {
             ),
         ];
     }
+    addBook(book) {
+        this.books.push(book);
+
+        addBookCard(book);
+    }
 }
 
 const bookForm = document.getElementById("bookForm");
@@ -75,11 +80,6 @@ const toggleReadStatus = (id) => {
     bookInList.innerHTML = bookCardHTML(myLibrary[bookIndex]);
 };
 
-const addNewBook = (book) => {
-    myLibrary.push(book);
-
-    addBookCard(book);
-};
 const bookCardHTML = (book) => {
     return `
     <div class="card shadow-sm">
