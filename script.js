@@ -143,3 +143,4 @@ bookForm.addEventListener("submit", (event) => {
 
 const myLibrary = new Library();
 const ui = new LibraryUI();
+ui.renderAll(myLibrary.books);
