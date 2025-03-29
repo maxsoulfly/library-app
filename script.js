@@ -32,8 +32,6 @@ class Library {
     }
     addBook(book) {
         this.books.push(book);
-
-        addBookCard(book);
     }
     removeBook(id) {
         // remove from array
