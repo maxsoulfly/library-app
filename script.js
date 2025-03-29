@@ -1,84 +1,94 @@
 class Book {
-	constructor(id, title, author, pages, read) {
-		this.id = crypto.randomUUID();
-		this.title = title;
-		this.author = author;
-		this.pages = pages;
-		this.read = read;
-	}
+    constructor(id, title, author, pages, read) {
+        this.id = crypto.randomUUID();
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
 }
 
-const myLibrary = [
-	new Book(null, "The Hobbit", "J.R.R. Tolkien", 295, true),
-	new Book(null, "1984", "George Orwell", 328, false),
-	new Book(null, "Dune", "Frank Herbert", 412, true),
-	new Book(null, "The Lord of the Rings", "J.R.R. Tolkien", 1178, true),
-	new Book(
-		null,
-		"The Hitchhiker's Guide to the Galaxy",
-		"Douglas Adams",
-		208,
-		false
-	),
-];
+class Library {
+    constructor() {
+        this.books = [
+            new Book(null, "The Hobbit", "J.R.R. Tolkien", 295, true),
+            new Book(null, "1984", "George Orwell", 328, false),
+            new Book(null, "Dune", "Frank Herbert", 412, true),
+            new Book(
+                null,
+                "The Lord of the Rings",
+                "J.R.R. Tolkien",
+                1178,
+                true
+            ),
+            new Book(
+                null,
+                "The Hitchhiker's Guide to the Galaxy",
+                "Douglas Adams",
+                208,
+                false
+            ),
+        ];
+    }
+}
 
 const bookForm = document.getElementById("bookForm");
 
 bookForm.addEventListener("submit", (event) => {
-	event.preventDefault();
+    event.preventDefault();
 
-	const title = document.querySelector("#title").value;
-	const author = document.querySelector("#author").value;
-	const pages = document.querySelector("#pages").value;
-	const read = document.querySelector("#read").checked;
+    const title = document.querySelector("#title").value;
+    const author = document.querySelector("#author").value;
+    const pages = document.querySelector("#pages").value;
+    const read = document.querySelector("#read").checked;
 
-	const book = new Book(null, title, author, pages, read);
+    const book = new Book(null, title, author, pages, read);
 
-	addNewBook(book);
+    addNewBook(book);
 
-	// reset form and close modal
-	bookForm.reset();
-	let bookModal = bootstrap.Modal.getInstance(
-		document.getElementById("bookModal")
-	);
-	bookModal.hide();
+    // reset form and close modal
+    bookForm.reset();
+    let bookModal = bootstrap.Modal.getInstance(
+        document.getElementById("bookModal")
+    );
+    bookModal.hide();
 });
 
 const removeBookFromLibrary = (id) => {
-	// remove from array
-	const bookIndex = myLibrary.findIndex((book) => book.id === id);
-	if (bookIndex === -1) return;
-	myLibrary.splice(bookIndex, 1);
+    // remove from array
+    const bookIndex = myLibrary.findIndex((book) => book.id === id);
+    if (bookIndex === -1) return;
+    myLibrary.splice(bookIndex, 1);
 
-	// remove from html
-	const bookInList = document.querySelector(`#book-${id}`);
-	bookInList.parentElement.removeChild(bookInList);
+    // remove from html
+    const bookInList = document.querySelector(`#book-${id}`);
+    bookInList.parentElement.removeChild(bookInList);
 };
 const toggleReadStatus = (id) => {
-	// change in data
-	const bookIndex = myLibrary.findIndex((book) => book.id === id);
-	if (bookIndex === -1) return;
-	myLibrary[bookIndex].read = !myLibrary[bookIndex].read;
+    // change in data
+    const bookIndex = myLibrary.findIndex((book) => book.id === id);
+    if (bookIndex === -1) return;
+    myLibrary[bookIndex].read = !myLibrary[bookIndex].read;
 
-	// change in html
-	const bookInList = document.querySelector(`#book-${id}`);
-	bookInList.innerHTML = bookCardHTML(myLibrary[bookIndex]);
+    // change in html
+    const bookInList = document.querySelector(`#book-${id}`);
+    bookInList.innerHTML = bookCardHTML(myLibrary[bookIndex]);
 };
 
 const addNewBook = (book) => {
-	myLibrary.push(book);
+    myLibrary.push(book);
 
-	addBookCard(book);
+    addBookCard(book);
 };
 const bookCardHTML = (book) => {
-	return `
+    return `
     <div class="card shadow-sm">
         <div class="card-body">
             <h5 class="book-title">
                 ${book.title}
                 <span class="badge rounded-pill ${
-					book.read ? "text-bg-success" : "text-bg-secondary"
-				}">
+                    book.read ? "text-bg-success" : "text-bg-secondary"
+                }">
                     ${book.read ? "Read" : "Unread"}
                 </span>
             </h5>
@@ -101,16 +111,16 @@ const bookCardHTML = (book) => {
 };
 
 const addBookCard = (book) => {
-	const bookList = document.querySelector("#bookList");
-	const bookCard = document.createElement("div");
-	bookCard.classList.add("col");
-	bookCard.id = `book-${book.id}`;
-	bookCard.innerHTML = bookCardHTML(book);
-	bookList.appendChild(bookCard);
+    const bookList = document.querySelector("#bookList");
+    const bookCard = document.createElement("div");
+    bookCard.classList.add("col");
+    bookCard.id = `book-${book.id}`;
+    bookCard.innerHTML = bookCardHTML(book);
+    bookList.appendChild(bookCard);
 };
 
 const renderBooks = () => {
-	myLibrary.forEach((book) => addBookCard(book));
+    myLibrary.forEach((book) => addBookCard(book));
 };
 
 renderBooks();
