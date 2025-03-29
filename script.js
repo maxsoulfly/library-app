@@ -35,6 +35,31 @@ class Library {
 
         addBookCard(book);
     }
+    removeBook(id) {
+        // remove from array
+        const bookIndex = this.books.findIndex((book) => book.id === id);
+        if (bookIndex === -1) return false;
+        this.books.splice(bookIndex, 1);
+
+        // remove from html
+        const bookInList = document.querySelector(`#book-${id}`);
+        bookInList.parentElement.removeChild(bookInList);
+
+        return true;
+    }
+    toggleReadStatus(id) {
+        // change in data
+        const bookIndex = this.books.findIndex((book) => book.id === id);
+        if (bookIndex === -1) return;
+        this.books[bookIndex].read = !this.books[bookIndex].read;
+
+        // change in html
+        const bookInList = document.querySelector(`#book-${id}`);
+        bookInList.innerHTML = bookCardHTML(this.books[bookIndex]);
+    }
+    renderAll() {
+        this.books.forEach((book) => addBookCard(book));
+    }
 }
 
 const bookForm = document.getElementById("bookForm");
@@ -58,27 +83,6 @@ bookForm.addEventListener("submit", (event) => {
     );
     bookModal.hide();
 });
-
-const removeBookFromLibrary = (id) => {
-    // remove from array
-    const bookIndex = myLibrary.findIndex((book) => book.id === id);
-    if (bookIndex === -1) return;
-    myLibrary.splice(bookIndex, 1);
-
-    // remove from html
-    const bookInList = document.querySelector(`#book-${id}`);
-    bookInList.parentElement.removeChild(bookInList);
-};
-const toggleReadStatus = (id) => {
-    // change in data
-    const bookIndex = myLibrary.findIndex((book) => book.id === id);
-    if (bookIndex === -1) return;
-    myLibrary[bookIndex].read = !myLibrary[bookIndex].read;
-
-    // change in html
-    const bookInList = document.querySelector(`#book-${id}`);
-    bookInList.innerHTML = bookCardHTML(myLibrary[bookIndex]);
-};
 
 const bookCardHTML = (book) => {
     return `
@@ -119,8 +123,4 @@ const addBookCard = (book) => {
     bookList.appendChild(bookCard);
 };
 
-const renderBooks = () => {
-    myLibrary.forEach((book) => addBookCard(book));
-};
-
-renderBooks();
+const myLibrary = new Library();
