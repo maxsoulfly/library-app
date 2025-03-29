@@ -116,27 +116,34 @@ class LibraryUI {
     }
 
     handleFormSubmit() {
-        const bookForm = document.getElementById("bookForm");
+        this.formElements = {
+            title: document.querySelector("#title"),
+            author: document.querySelector("#author"),
+            pages: document.querySelector("#pages"),
+            read: document.querySelector("#read"),
+            form: document.getElementById("bookForm"),
+            modal: document.getElementById("bookModal"),
+        };
 
-        bookForm.addEventListener("submit", (event) => {
+        const { title, author, pages, read, form, modal } = this.formElements;
+
+        form.addEventListener("submit", (event) => {
             event.preventDefault();
 
-            const title = document.querySelector("#title").value;
-            const author = document.querySelector("#author").value;
-            const pages = document.querySelector("#pages").value;
-            const read = document.querySelector("#read").checked;
-
-            const book = new Book(null, title, author, pages, read);
+            const book = new Book(
+                null,
+                title.value,
+                author.value,
+                pages.value,
+                read.checked
+            );
 
             myLibrary.addBook(book);
             this.renderBook(book);
 
             // reset form and close modal
-            bookForm.reset();
-            let bookModal = bootstrap.Modal.getInstance(
-                document.getElementById("bookModal")
-            );
-            bookModal.hide();
+            form.reset();
+            bootstrap.Modal.getInstance(modal).hide();
         });
     }
 }
