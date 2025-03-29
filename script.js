@@ -52,10 +52,6 @@ class Library {
         const bookIndex = this.books.findIndex((book) => book.id === id);
         if (bookIndex === -1) return;
         this.books[bookIndex].read = !this.books[bookIndex].read;
-
-        // change in html
-        const bookInList = document.querySelector(`#book-${id}`);
-        bookInList.innerHTML = bookCardHTML(this.books[bookIndex]);
     }
 }
 
@@ -69,7 +65,7 @@ class LibraryUI {
         bookCard.innerHTML = bookCardHTML(book);
         bookList.appendChild(bookCard);
 
-        updateCard(bookCard, book);
+        this.updateCard(bookCard, book);
     }
     renderAll(books) {
         books.forEach((book) => this.renderBook(book));
