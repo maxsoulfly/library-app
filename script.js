@@ -57,11 +57,22 @@ class Library {
         const bookInList = document.querySelector(`#book-${id}`);
         bookInList.innerHTML = bookCardHTML(this.books[bookIndex]);
     }
-    renderAll() {
-        this.books.forEach((book) => addBookCard(book));
-    }
 }
 
+class LibraryUI {
+    constructor() {}
+    renderBook(book) {
+        const bookList = document.querySelector("#bookList");
+        const bookCard = document.createElement("div");
+        bookCard.classList.add("col");
+        bookCard.id = `book-${book.id}`;
+        bookCard.innerHTML = bookCardHTML(book);
+        bookList.appendChild(bookCard);
+    }
+    renderAll(books) {
+        books.forEach((book) => this.renderBook(book));
+    }
+}
 const bookForm = document.getElementById("bookForm");
 
 bookForm.addEventListener("submit", (event) => {
@@ -114,13 +125,6 @@ const bookCardHTML = (book) => {
     </div>`;
 };
 
-const addBookCard = (book) => {
-    const bookList = document.querySelector("#bookList");
-    const bookCard = document.createElement("div");
-    bookCard.classList.add("col");
-    bookCard.id = `book-${book.id}`;
-    bookCard.innerHTML = bookCardHTML(book);
-    bookList.appendChild(bookCard);
-};
+const addBookCard = (book) => {};
 
 const myLibrary = new Library();
