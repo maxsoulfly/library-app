@@ -34,19 +34,13 @@ class Library {
         this.books.push(book);
     }
     removeBook(id) {
-        // remove from array
         const bookIndex = this.books.findIndex((book) => book.id === id);
         if (bookIndex === -1) return false;
         this.books.splice(bookIndex, 1);
 
-        // remove from html
-        const bookInList = document.querySelector(`#book-${id}`);
-        bookInList.parentElement.removeChild(bookInList);
-
         return true;
     }
     toggleReadStatus(id) {
-        // change in data
         const bookIndex = this.books.findIndex((book) => book.id === id);
         if (bookIndex === -1) return;
         this.books[bookIndex].read = !this.books[bookIndex].read;
@@ -60,7 +54,7 @@ class LibraryUI {
         const bookCard = document.createElement("div");
         bookCard.classList.add("col");
         bookCard.id = `book-${book.id}`;
-        bookCard.innerHTML = bookCardHTML(book);
+        bookCard.innerHTML = this.bookCardHTML(book);
         bookList.appendChild(bookCard);
 
         this.updateCard(bookCard, book);
@@ -72,7 +66,9 @@ class LibraryUI {
         bookCard
             .querySelector('[data-action="toggle"]')
             .addEventListener("click", () => {
+                // change in data
                 myLibrary.toggleReadStatus(book.id);
+                // change in DOM
                 const updatedBook = myLibrary.books.find(
                     (bookInLibrary) => bookInLibrary.id === book.id
                 );
@@ -83,6 +79,7 @@ class LibraryUI {
             .querySelector('[data-action="delete"]')
             .addEventListener("click", () => {
                 myLibrary.removeBook(book.id);
+                bookCard.remove();
             });
     }
     bookCardHTML(book) {
